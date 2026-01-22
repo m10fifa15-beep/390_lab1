@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Create User</title>
+</head>
+<body>
+  <h1>Create User</h1>
+
+  <form id="createUserForm">
+    <label>Username</label><br />
+    <input type="text" name="username" required /><br /><br />
+
+    <label>Password</label><br />
+    <input type="password" name="password" required /><br /><br />
+
+    <label>First name</label><br />
+    <input type="text" name="first_name" required /><br /><br />
+
+    <label>Last name</label><br />
+    <input type="text" name="last_name" required /><br /><br />
+
+    <label>Birthday (string format)</label><br />
+    <input type="text" name="birthday" placeholder="2002-01-30" required /><br /><br />
+
+    <button type="submit">Create User</button>
+  </form>
+
+  <p id="createUserResult"></p>
+
+  <p>
+    <a href="/">Back to Home</a>
+  </p>
+
+  <script>
+    const form = document.getElementById('createUserForm');
+    const result = document.getElementById('createUserResult');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(form);
+
+      try {
+        const res = await fetch('/create-user', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams(formData)
+        });
+
+        const text = await res.text();
+        result.textContent = text;
+      } catch (err) {
+        result.textContent = 'Error contacting server';
+      }
+    });
+  </script>
+</body>
+</html>
